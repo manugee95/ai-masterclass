@@ -625,7 +625,7 @@ export default function App() {
       </a>
 
       {/* STICKY MOBILE CTA */}
-      {/* <div className="fixed bottom-0 left-0 right-0 sm:hidden z-40 p-3 bg-background/95 backdrop-blur-xl border-t border-border">
+      <div className="fixed bottom-0 left-0 right-0 sm:hidden z-40 p-3 bg-background/95 backdrop-blur-xl border-t border-border">
         <a
           href={WHATSAPP_URL}
           target="_blank"
@@ -639,7 +639,7 @@ export default function App() {
           Reserve My Free Seat
           <ChevronRight className="h-4 w-4" />
         </a>
-      </div> */}
+      </div>
     </div>
   );
 }
