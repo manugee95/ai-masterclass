@@ -123,8 +123,8 @@ const demos = [
 ];
 
 const stats = [
-  { value: "20+", label: "Projects Built" },
-  { value: "300+", label: "Students Trained" },
+  { value: "30+", label: "Projects Built" },
+  { value: "400+", label: "Students Trained" },
   { value: "5+", label: "Years Experience" },
 ];
 
@@ -472,8 +472,7 @@ export default function App() {
                   </p>
 
                   <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-                    Emmanuel Eseigbe is a software engineer and AI educator
-                    passionate about helping individuals and businesses
+                    I am passionate about helping individuals and businesses
                     understand emerging technologies in practical, accessible
                     ways. Through Highcrown Academy, I teach people how AI
                     can improve productivity, support business growth and
