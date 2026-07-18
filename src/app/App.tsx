@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { motion, useInView } from "motion/react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import logoImg from "@/imports/favicon-removebg-preview.png";
 import emmanuelImg from "@/imports/emmanuel.png";
+import ReactPixel from "react-facebook-pixel";
 import {
   CheckCircle2,
   Zap,
@@ -23,7 +24,8 @@ import {
   Cpu,
 } from "lucide-react";
 
-const WHATSAPP_URL = "https://chat.whatsapp.com/GRrW94XffPf2xZrqqQ2T3T?s=sw&p=i&ilr=1";
+const WHATSAPP_URL = "https://chat.whatsapp.com/Hv7qE01nOgLKa50GWlaxRf?s=cl&p=i&ilr=4";
+const FB_PIXEL_ID = "1341132897975957";
 
 function useCountdown(targetDate: Date) {
   const [timeLeft, setTimeLeft] = useState({
@@ -129,6 +131,15 @@ const stats = [
 ];
 
 export default function App() {
+  useEffect(() => {
+    ReactPixel.init(FB_PIXEL_ID, undefined, { autoConfig: true, debug: false });
+    ReactPixel.pageView();
+  }, []);
+
+  const trackWhatsAppClick = useCallback((location: string) => {
+    ReactPixel.track("Lead", { content_name: "WhatsApp CTA", content_category: location });
+  }, []);
+
   const [scrolled, setScrolled] = useState(false);
   const eventDate = useMemo(
     () => new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000),
@@ -173,6 +184,7 @@ export default function App() {
           <a
             href={WHATSAPP_URL}
             target="_blank"
+            onClick={() => trackWhatsAppClick("nav")}
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 hover:opacity-90 active:scale-95"
             style={{ background: "#C8120A", color: "#fff" }}
@@ -300,6 +312,7 @@ export default function App() {
             <a
               href={WHATSAPP_URL}
               target="_blank"
+              onClick={() => trackWhatsAppClick("nav")}
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl text-base font-semibold transition-all duration-200 hover:opacity-90 hover:scale-[1.02] active:scale-95 shadow-lg"
               style={{
@@ -547,6 +560,7 @@ export default function App() {
             <a
               href={WHATSAPP_URL}
               target="_blank"
+              onClick={() => trackWhatsAppClick("nav")}
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl text-base font-semibold transition-all duration-200 hover:opacity-90 hover:scale-[1.02] active:scale-95"
               style={{
@@ -556,7 +570,7 @@ export default function App() {
               }}
             >
               <MessageCircle className="h-4 w-4" />
-              Join the Free WhatsApp Community
+              Join the Free WhatsApp Group
             </a>
 
             <p className="text-xs text-zinc-600 mt-5">
@@ -611,6 +625,7 @@ export default function App() {
       <a
         href={WHATSAPP_URL}
         target="_blank"
+        onClick={() => trackWhatsAppClick("nav")}
         rel="noopener noreferrer"
         className="fixed bottom-24 sm:bottom-8 right-5 sm:right-8 z-50 flex items-center gap-2 px-4 py-3 rounded-full shadow-2xl text-sm font-semibold transition-all duration-200 hover:scale-105 active:scale-95"
         style={{
@@ -629,6 +644,7 @@ export default function App() {
         <a
           href={WHATSAPP_URL}
           target="_blank"
+          onClick={() => trackWhatsAppClick("mobile_cta")}
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 active:scale-95"
           style={{
