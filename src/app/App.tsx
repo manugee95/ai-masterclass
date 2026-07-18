@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 
 const WHATSAPP_URL = "https://chat.whatsapp.com/Hv7qE01nOgLKa50GWlaxRf?s=cl&p=i&ilr=4";
-const FB_PIXEL_ID = "1341132897975957";
+const FB_PIXEL_ID = "1555446259502687";
 
 function useCountdown(targetDate: Date) {
   const [timeLeft, setTimeLeft] = useState({
