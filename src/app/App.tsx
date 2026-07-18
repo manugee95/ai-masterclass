@@ -3,7 +3,6 @@ import { motion, useInView } from "motion/react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import logoImg from "@/imports/favicon-removebg-preview.png";
 import emmanuelImg from "@/imports/emmanuel.png";
-import ReactPixel from "react-facebook-pixel";
 import {
   CheckCircle2,
   Zap,
@@ -24,8 +23,15 @@ import {
   Cpu,
 } from "lucide-react";
 
-const WHATSAPP_URL = "https://chat.whatsapp.com/Hv7qE01nOgLKa50GWlaxRf?s=cl&p=i&ilr=4";
+const WHATSAPP_URL =
+  "https://chat.whatsapp.com/Hv7qE01nOgLKa50GWlaxRf?s=cl&p=i&ilr=4";
 const FB_PIXEL_ID = "1555446259502687";
+declare global {
+  interface Window {
+    fbq: any;
+    _fbq: any;
+  }
+}
 
 function useCountdown(targetDate: Date) {
   const [timeLeft, setTimeLeft] = useState({
@@ -131,13 +137,55 @@ const stats = [
 ];
 
 export default function App() {
+  // useEffect(() => {
+  //   ReactPixel.init(FB_PIXEL_ID, undefined, { autoConfig: true, debug: false });
+  //   ReactPixel.pageView();
+  // }, []);
+
+  // const trackWhatsAppClick = useCallback((location: string) => {
+  //   ReactPixel.track("Lead", { content_name: "WhatsApp CTA", content_category: location });
+  // }, []);
+
   useEffect(() => {
-    ReactPixel.init(FB_PIXEL_ID, undefined, { autoConfig: true, debug: false });
-    ReactPixel.pageView();
+    if (window.fbq) return;
+
+    ((f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) => {
+      if (f.fbq) return;
+
+      n = f.fbq = function (...args: any[]) {
+        if (n.callMethod) {
+          n.callMethod.apply(n, args);
+        } else {
+          n.queue.push(args);
+        }
+      };
+
+      if (!f._fbq) f._fbq = n;
+
+      n.push = n;
+      n.loaded = true;
+      n.version = "2.0";
+      n.queue = [];
+
+      t = b.createElement(e);
+      t.async = true;
+      t.src = "https://connect.facebook.net/en_US/fbevents.js";
+
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(window, document, "script", "");
+
+    window.fbq("init", FB_PIXEL_ID);
+    window.fbq("track", "PageView");
   }, []);
 
   const trackWhatsAppClick = useCallback((location: string) => {
-    ReactPixel.track("Lead", { content_name: "WhatsApp CTA", content_category: location });
+    if (window.fbq) {
+      window.fbq("track", "Lead", {
+        content_name: "WhatsApp CTA",
+        content_category: location,
+      });
+    }
   }, []);
 
   const [scrolled, setScrolled] = useState(false);
@@ -312,7 +360,7 @@ export default function App() {
             <a
               href={WHATSAPP_URL}
               target="_blank"
-              onClick={() => trackWhatsAppClick("nav")}
+              onClick={() => trackWhatsAppClick("hero")}
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl text-base font-semibold transition-all duration-200 hover:opacity-90 hover:scale-[1.02] active:scale-95 shadow-lg"
               style={{
@@ -487,9 +535,9 @@ export default function App() {
                   <p className="text-zinc-400 text-sm leading-relaxed mb-8">
                     I am passionate about helping individuals and businesses
                     understand emerging technologies in practical, accessible
-                    ways. Through Highcrown Academy, I teach people how AI
-                    can improve productivity, support business growth and
-                    simplify everyday work.
+                    ways. Through Highcrown Academy, I teach people how AI can
+                    improve productivity, support business growth and simplify
+                    everyday work.
                   </p>
 
                   <div className="grid grid-cols-3 gap-4">
@@ -560,7 +608,7 @@ export default function App() {
             <a
               href={WHATSAPP_URL}
               target="_blank"
-              onClick={() => trackWhatsAppClick("nav")}
+              onClick={() => trackWhatsAppClick("final-cta")}
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl text-base font-semibold transition-all duration-200 hover:opacity-90 hover:scale-[1.02] active:scale-95"
               style={{
@@ -625,7 +673,7 @@ export default function App() {
       <a
         href={WHATSAPP_URL}
         target="_blank"
-        onClick={() => trackWhatsAppClick("nav")}
+        onClick={() => trackWhatsAppClick("floating-button")}
         rel="noopener noreferrer"
         className="fixed bottom-24 sm:bottom-8 right-5 sm:right-8 z-50 flex items-center gap-2 px-4 py-3 rounded-full shadow-2xl text-sm font-semibold transition-all duration-200 hover:scale-105 active:scale-95"
         style={{
@@ -644,7 +692,7 @@ export default function App() {
         <a
           href={WHATSAPP_URL}
           target="_blank"
-          onClick={() => trackWhatsAppClick("mobile_cta")}
+          onClick={() => trackWhatsAppClick("sticky-mobile")}
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 active:scale-95"
           style={{
